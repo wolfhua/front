@@ -1,32 +1,54 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <simu-header></simu-header>
+    <router-view></router-view>
+    <simu-footer></simu-footer>
+    <!-- <div class="layui-container">
+      <form class="layui-form layui-form-pane" action="">
+        <ValidationProvider class="layui-form-item" name="name" tag="div" rules="required|email" v-slot="{ errors }">
+          <label class="layui-form-label">用户名</label>
+          <div class="layui-input-inline">
+            <input type="text" name="name" v-model="name" placeholder="请输入账号" autocomplete="off" class="layui-input">
+          </div>
+          <div class="error layui-form-mid">{{ errors[0] }}</div>
+        </ValidationProvider>
+        <ValidationProvider class="layui-form-item" name="password" tag="div" rules="required|password:6,12" v-slot="{ errors }">
+          <label class="layui-form-label">密码</label>
+          <div class="layui-input-inline">
+            <input type="password" name="password" v-model="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+          </div>
+          <div class="error layui-form-mid">{{ errors[0] }}</div>
+        </ValidationProvider>
+        <ValidationProvider class="layui-form-item" name="code" tag="div" rules="required|length:4" v-slot="{ errors }">
+          <label class="layui-form-label">验证码</label>
+          <div class="layui-input-inline">
+            <input type="text" name="code" v-model="code" required lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+          </div>
+          <div class="error layui-form-mid">{{ errors[0] }}</div>
+          <div class="layui-form-mid svg"
+          @click="getCaptcha()"
+          v-html="captcha"></div>
+        </ValidationProvider>
+        <button type="button" class="layui-btn">点击登录</button>
+        <a class="simu-link" href="http://www.layui.com">忘记密码？</a>
+      </form>
+    </div> -->
   </div>
 </template>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
+export default {
+  name: 'app',
+  components: {
+    'simu-header': Header,
+    'simu-footer': Footer
   }
 }
+</script>
+
+<style lang="scss">
+@import "assets/layui/css/layui.css";
+@import "assets/css/global.css";
+@import "assets/layui/css/modules/layer/default/layer.css";
 </style>
