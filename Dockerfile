@@ -1,7 +1,7 @@
 # build stage
-FROM node:10 as build-stage
+FROM node:12 as build-stage
 
-LABEL maintainer=brian@toimc.com
+LABEL maintainer=18011468389@163.com
 
 # 创建一个工作目录
 WORKDIR /app
