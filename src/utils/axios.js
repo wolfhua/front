@@ -57,7 +57,7 @@ class HttpRequest {
   request (options) {
     const instance = axios.create()
     // 将用户侧传递的参数整合到默认参数
-    const newOptions = Object.assign(this.getInsideConfig, options)
+    const newOptions = Object.assign(this.getInsideConfig(), options)
     this.interceptors(instance)
     // instance(newOptions) == instance.requeat(newOptions)
     return instance(newOptions)
