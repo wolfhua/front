@@ -1,4 +1,3 @@
-import Links from '@/components/sidebar/Links';
 <template>
   <div class="fly-panel fly-column">
     <div class="layui-container">

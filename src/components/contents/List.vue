@@ -56,16 +56,42 @@ export default {
       page: 0,
       limit: 20,
       catalog: '', // 分类
+      current: '', // 当前分类选项
       lists: []
     }
   },
   components: {
     ListItem
   },
+  watch: {
+    // wacth,监听到变化才会执行
+    current (newval, oldval) {
+      // console.log('current:' + oldval + ',' + newval)
+      this.init()
+    },
+    $route (newval, oldval) {
+      const catalog = newval.params.catalog
+      if (typeof catalog !== 'undefined' && catalog !== '') {
+        this.catalog = catalog
+      }
+      this.init()
+    }
+  },
   mounted () {
+    console.log(this.$route.params.catalog)
+    const catalog = this.$route.params.catalog
+    if (typeof catalog !== 'undefined' && catalog !== '') {
+      this.catalog = catalog
+    }
     this._getLists()
   },
   methods: {
+    init () {
+      this.page = 0
+      this.isEnd = false
+      this.lists = []
+      this._getLists()
+    },
     _getLists () {
       // 判断是否重复点击
       if (this.isRepeat) return
@@ -118,6 +144,10 @@ export default {
       this._getLists()
     },
     search (val) {
+      if (typeof val === 'undefined' && this.current === '') {
+        return
+      }
+      this.current = val
       switch (val) {
         // 未结帖
         case 0:
@@ -145,6 +175,7 @@ export default {
         default:
           this.state = ''
           this.tag = ''
+          this.current = ''
           break
       }
     }
