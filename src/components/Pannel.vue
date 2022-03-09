@@ -1,27 +1,35 @@
+import Links from '@/components/sidebar/Links';
 <template>
   <div class="fly-panel fly-column">
     <div class="layui-container">
       <ul class="layui-clear">
-        <li class="layui-hide-xs layui-this"><a href="/">首页</a></li>
-        <li><a href="jie/index.html">提问</a></li>
-        <li>
-          <a href="jie/index.html">分享<span class="layui-badge-dot"></span></a>
-        </li>
-        <li><a href="jie/index.html">讨论</a></li>
-        <li><a href="jie/index.html">建议</a></li>
-        <li><a href="jie/index.html">公告</a></li>
-        <li><a href="jie/index.html">动态</a></li>
+        <router-link tag="li" to="/" class="layui-hide-xs"
+          ><a href="/">首页</a></router-link
+        >
+        <router-link
+          v-for="(item, index) in lists"
+          :key="'pannel' + index"
+          tag="li"
+          :to="item.path"
+        >
+          <a href="jie/index.html">
+            {{ item.name }}
+            <span class="layui-badge-dot" v-if="item.isNew"></span>
+          </a>
+        </router-link>
         <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
           <span class="fly-mid"></span>
         </li>
 
         <!-- 用户登入后显示 -->
-        <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
-          <a href="user/index.html">我发表的贴</a>
-        </li>
-        <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
-          <a href="user/index.html#collection">我收藏的贴</a>
-        </li>
+        <template v-if="isLogin">
+          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+            <a href="user/index.html">我发表的贴</a>
+          </li>
+          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+            <a href="user/index.html#collection">我收藏的贴</a>
+          </li>
+        </template>
       </ul>
 
       <div class="fly-column-right layui-hide-xs">
@@ -40,7 +48,44 @@
 
 <script>
 export default {
-  name: 'pannel'
+  name: 'pannel',
+  data () {
+    return {
+      lists: [
+        {
+          name: '提问',
+          path: '/index/ask',
+          isNew: false
+        },
+        {
+          name: '分享',
+          path: '/index/share',
+          isNew: true
+        },
+        {
+          name: '讨论',
+          path: '/index/discuss',
+          isNew: false
+        },
+        {
+          name: '建议',
+          path: '/index/advise',
+          isNew: true
+        },
+        {
+          name: '公告',
+          path: '/index/notice',
+          isNew: false
+        },
+        {
+          name: '动态',
+          path: '/index/logs',
+          isNew: false
+        }
+      ],
+      isLogin: this.$store.state.isLogin
+    }
+  }
 }
 </script>
 
