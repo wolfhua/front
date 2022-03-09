@@ -107,7 +107,7 @@ export default {
         if (err) {
           this.$popup({
             // type: 'alert',
-            msg: err.msg,
+            msg: err.message,
             successBtnText: 'OK'
           })
         }
