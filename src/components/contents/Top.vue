@@ -15,37 +15,15 @@
 </template>
 
 <script>
+import listmix from '@/mixin/list'
 import ListItem from './ListItem'
 export default {
   name: 'top',
+  mixins: [listmix],
   data () {
     return {
-      page: 0,
-      limit: 20,
-      lists: [
-        {
-          uid: {
-            name: '李四',
-            isVip: 3
-          },
-          catalog: 'ask',
-          title: '俄罗斯打乌克兰,国际原油上涨',
-          content: '',
-          created: '2022-03-03 13:14:25',
-          fav: 20,
-          isEnd: 0,
-          reads: 0,
-          status: 0,
-          answer: 56,
-          isTop: 1,
-          tags: [
-            {
-              name: '热门',
-              class: 'layui-bg-blue'
-            }
-          ]
-        }
-      ]
+      isTop: 1,
+      limit: 5
     }
   },
   components: {

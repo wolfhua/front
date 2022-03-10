@@ -42,22 +42,14 @@
 </template>
 
 <script>
-import { getList } from '@/api/content'
+import listmix from '@/mixin/list'
 import ListItem from './ListItem'
 export default {
   name: 'list',
+  mixins: [listmix],
   data () {
     return {
-      isEnd: false, // 是否最后一页
-      isRepeat: false, // 是否重复点击加载
-      state: '',
-      tag: '',
-      sort: 'created',
-      page: 0,
-      limit: 20,
-      catalog: '', // 分类
-      current: '', // 当前分类选项
-      lists: []
+
     }
   },
   components: {
@@ -86,63 +78,6 @@ export default {
     this._getLists()
   },
   methods: {
-    init () {
-      this.page = 0
-      this.isEnd = false
-      this.lists = []
-      this._getLists()
-    },
-    _getLists () {
-      // 判断是否重复点击
-      if (this.isRepeat) return
-      // 判断是否最后一页
-      if (this.isEnd) return
-      this.isRepeat = true
-      const options = {
-        catalog: this.catalog,
-        isTop: 0,
-        page: this.page,
-        limit: this.limit,
-        sort: this.sort,
-        tag: this.tag,
-        status: this.state
-      }
-      getList(options).then((res) => {
-        this.isRepeat = false
-        // 异常判断，接口状态返回为200，提示错误
-        // 判断lists数组长度，如果为0，直接赋值
-        // 如果长度不为0，追加
-        if (res.code === 200) {
-          if (res.data.length < this.limit) {
-            this.isEnd = true
-          }
-          if (this.lists.length === 0) {
-            this.lists = res.data
-          } else {
-            this.lists = this.lists.concat(res.data)
-          }
-        } else {
-          this.$popup({
-            // type: 'alert',
-            msg: res.message,
-            successBtnText: 'OK'
-          })
-        }
-      }).catch((err) => {
-        this.isRepeat = false
-        if (err) {
-          this.$popup({
-            // type: 'alert',
-            msg: err.message,
-            successBtnText: 'OK'
-          })
-        }
-      })
-    },
-    nextPage () {
-      this.page++
-      this._getLists()
-    },
     search (val) {
       if (typeof val === 'undefined' && this.current === '') {
         return
