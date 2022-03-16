@@ -19,7 +19,7 @@ const getTips = () => {
 /**
  * 获取本周热议
  */
-const getTop = () => {
+const getTopWeek = () => {
   return axios.get('/public/topWeek')
 }
 
@@ -33,6 +33,6 @@ const getLinks = () => {
 export {
   getList,
   getTips,
-  getTop,
+  getTopWeek,
   getLinks
 }

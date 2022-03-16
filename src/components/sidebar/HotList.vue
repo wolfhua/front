@@ -1,45 +1,9 @@
 <template>
-  <dl class="fly-panel fly-list-one">
+  <dl class="fly-panel fly-list-one" v-if="lists.length > 0">
     <dt class="fly-panel-title">本周热议</dt>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
-    </dd>
-    <dd>
-      <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-      <span><i class="iconfont icon-pinglun1"></i> 16</span>
+    <dd v-for="(item, index) in lists" :key="'hotlist' + index">
+      <a href="jie/detail.html">{{ item.title }}</a>
+      <span><i class="iconfont icon-pinglun1"></i> {{ item.answer }}</span>
     </dd>
 
     <!-- 无数据时 -->
@@ -50,8 +14,21 @@
 </template>
 
 <script>
+import { getTopWeek } from '@/api/content'
 export default {
-  name: 'hotlist'
+  name: 'links',
+  data () {
+    return {
+      lists: []
+    }
+  },
+  mounted () {
+    getTopWeek().then((res) => {
+      if (res.code === 200) {
+        this.lists = res.data
+      }
+    })
+  }
 }
 </script>
 

@@ -182,6 +182,8 @@ export default {
       }).then(res => {
         if (res.code === 200) {
           // 登录成功，存储用户信息
+          this.$store.commit('setUserInfo', res.data)
+          this.$store.commit('setIsLogin', true)
           // 清空数据
           this.username = ''
           this.password = ''
@@ -190,6 +192,8 @@ export default {
           requestAnimationFrame(() => {
             this.$refs.observer.reset()
           })
+          // 路由跳转，跳转到首页
+          this.$router.push({ name: 'index' })
         } else if (res.code === 401) {
           // 图片验证码错误
           this.$refs.codeField.setErrors([res.msg])
