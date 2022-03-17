@@ -183,6 +183,7 @@ export default {
         if (res.code === 200) {
           // 登录成功，存储用户信息
           this.$store.commit('setUserInfo', res.data)
+          this.$store.commit('setToken', res.token)
           this.$store.commit('setIsLogin', true)
           // 清空数据
           this.username = ''
@@ -190,7 +191,7 @@ export default {
           this.code = ''
           // 清空表单数据
           requestAnimationFrame(() => {
-            this.$refs.observer.reset()
+            this.$refs.observer && this.$refs.observer.reset()
           })
           // 路由跳转，跳转到首页
           this.$router.push({ name: 'index' })

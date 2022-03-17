@@ -48,9 +48,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "assets/layui/css/layui.css";
 @import "assets/css/global.css";
-@import "assets/layui/css/modules/layer/default/layer.css";
 
 .svg {
   position: relative;
@@ -58,5 +56,20 @@ export default {
 }
 .gray {
   color: #999;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.pl0 {
+  padding-left: 0;
+}
+pd20 {
+  padding: 20px;
 }
 </style>

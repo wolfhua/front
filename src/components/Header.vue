@@ -2,7 +2,7 @@
   <div class="fly-header layui-bg-black">
     <div class="layui-container">
       <a class="fly-logo" href="/">
-        <img src="../assets/logo-2.png" alt="layui" />
+        <img src="../assets/img/logo-2.png" alt="layui" />
       </a>
       <ul class="layui-nav fly-nav layui-hide-xs">
         <li class="layui-nav-item layui-this">
@@ -76,28 +76,31 @@
               :class="{ 'layui-show': isHover }"
             >
               <dd>
-                <a href="user/set.html"
-                  ><i class="layui-icon">&#xe620;</i>基本设置</a
-                >
+                <router-link :to="{ name: 'info' }">
+                  <i class="icon-size layui-icon layui-icon-set"></i>
+                  基本设置
+                </router-link>
               </dd>
               <dd>
-                <a href="user/message.html"
-                  ><i class="iconfont icon-tongzhi" style="top: 4px"></i
-                  >我的消息</a
-                >
+                <router-link :to="{ name: 'msg' }">
+                  <i class="icon-size layui-icon layui-icon-reply-fill"></i>
+                  我的消息
+                </router-link>
               </dd>
               <dd>
-                <a href="user/home.html"
-                  ><i
-                    class="layui-icon"
-                    style="margin-left: 2px; font-size: 22px"
-                    >&#xe68e;</i
-                  >我的主页</a
-                >
+                <router-link :to="{ name: 'home' }">
+                  <i class="icon-size layui-icon layui-icon-home"></i>
+                  我的主页
+                </router-link>
               </dd>
               <hr style="margin: 5px 0" />
               <dd>
-                <a href="/user/logout/" style="text-align: center">退出</a>
+                <a
+                  href="javascript:void(0)"
+                  style="text-align: center"
+                  @click="logout()"
+                  >退出</a
+                >
               </dd>
             </dl>
           </li>
@@ -137,6 +140,24 @@ export default {
       this.hoverContr = setTimeout(() => {
         this.isHover = false
       }, 500)
+    },
+    logout () {
+      this.$popup({
+        type: 'confirm',
+        msg: '确定要退出登录了吗？',
+        successBtnText: '真要走了',
+        cancelBtnText: '再耍哈儿'
+      }, () => {
+        sessionStorage.clear()
+        this.$store.commit('setUserInfo', '')
+        this.$store.commit('setToken', '')
+        this.$store.commit('setIsLogin', false)
+
+        // this.$router.push({ name: 'index' })
+        this.$router.push('/')
+      }, () => {
+        console.log('还没走的')
+      })
     }
   }
 }
@@ -147,5 +168,8 @@ export default {
   left: -15px;
   top: -10px;
   margin-left: 15px;
+}
+.icon-size {
+  font-size: 18px !important;
 }
 </style>
