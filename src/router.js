@@ -78,8 +78,8 @@ const router = new Router({
       path: '/center',
       // name: 'center',
       component: Center,
-      linkActiveClass: 'layui-this',
       meta: { requiresAuth: true },
+      linkActiveClass: 'layui-this',
       children: [
         {
           path: '',
@@ -154,8 +154,8 @@ router.beforeEach((to, from, next) => {
     store.commit('setToken', token)
     store.commit('setIsLogin', true)
   }
-  // if (to.matched.some(record => record.meta.requiresAuth)) {
-  if (to.meta.requiresAuth) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+  // if (to.meta.requiresAuth) {
     // 此路由需要授权，请检查是否已登录
     // 如果没有，则重定向到登录页面
     if (store.state.isLogin) {

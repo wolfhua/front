@@ -10,7 +10,7 @@ Popup.install = (Vue) => {
   // 绑定实例
   instance.$mount(document.createElement('div'))
   // 动态添加
-  console.log(instance)
+  // console.log(instance)
   document.body.appendChild(instance.$el)
 
   // 添加实例方法
