@@ -142,7 +142,7 @@ export default {
     }
   },
   mounted () {
-    // window.vue = this 可以直接在浏览器调试窗口使用 window.vue.$alert...
+    // window.vue = this // 可以直接在浏览器调试窗口使用 window.vue.$alert...
     let sid = ''
     if (localStorage.getItem('sid')) {
       sid = localStorage.getItem('sid')

@@ -8,8 +8,10 @@ import '@/utils/veevalidate'
 
 // Vue.use(Vuelidate)
 import Popup from './components/modules/popup/index'
+import Pop from './components/modules/pop/index'
 
 Vue.use(Popup)
+Vue.use(Pop)
 
 Vue.config.productionTip = false
 

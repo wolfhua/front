@@ -153,7 +153,9 @@ export default {
         this.$store.commit('setToken', '')
         this.$store.commit('setIsLogin', false)
 
-        this.$router.push({ name: 'index' })
+        // this.$router.push({ name: 'index' })
+        // 处理报路由重复错误
+        this.$router.push({ name: 'index' }, () => {})
         // this.$router.push('/')
       }, () => {
         console.log('还没走的')

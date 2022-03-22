@@ -57,6 +57,20 @@ export default {
 .gray {
   color: #999;
 }
+@for $i from 0 to 5 {
+  .pd#{$i} {
+    padding: $i * 10 + px !important;
+  }
+  .pl#{$i} {
+    padding-left: $i * 10 + px !important;
+  }
+  .pr#{$i} {
+    padding-right: $i * 10 + px !important;
+  }
+  .mr#{$i} {
+    margin-right: $i * 10 + px !important;
+  }
+}
 .text-center {
   text-align: center;
 }
@@ -69,7 +83,13 @@ export default {
 .pl0 {
   padding-left: 0;
 }
-pd20 {
+.pd20 {
   padding: 20px;
+}
+.orange {
+  color: #ff7832;
+}
+.pull-right {
+  float: right;
 }
 </style>

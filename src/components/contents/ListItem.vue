@@ -63,8 +63,11 @@ import List from '@/components/contents/List';
 <script>
 // lodash效率更高
 import _ from 'lodash'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
+import moment from 'dayjs'
+import 'dayjs/locale/zh-cn'
+import relativeTime from 'dayjs/plugin/relativeTime'
+moment.locale('zh-cn')
+moment.extend(relativeTime)
 export default {
   name: 'listitem',
   props: {
@@ -121,7 +124,10 @@ export default {
         return moment(date).format('YYYY-MM-DD')
       } else {
         // xx分钟（小时、天）前
-        return moment(date).from(moment())
+        // moment库用法
+        // return moment(date).from(moment())
+        // dayjs库用法
+        return moment(date).fromNow()
       }
     }
   }

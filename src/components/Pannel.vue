@@ -2,19 +2,24 @@
   <div class="fly-panel fly-column">
     <div class="layui-container">
       <ul class="layui-clear">
-        <router-link tag="li" to="/" class="layui-hide-xs"
-          ><a href="/">首页</a></router-link
-        >
+        <router-link to="/" custom v-slot="{ navigate }">
+          <li @click="navigate" @keypress.enter="navigate" role="link">
+            <a href="/">首页</a>
+          </li>
+        </router-link>
         <router-link
           v-for="(item, index) in lists"
           :key="'pannel' + index"
-          tag="li"
           :to="item.path"
+          custom
+          v-slot="{ navigate }"
         >
-          <a href="jie/index.html">
-            {{ item.name }}
-            <span class="layui-badge-dot" v-if="item.isNew"></span>
-          </a>
+          <li @click="navigate" @keypress.enter="navigate" role="link">
+            <a href="jie/index.html">
+              {{ item.name }}
+              <span class="layui-badge-dot" v-if="item.isNew"></span>
+            </a>
+          </li>
         </router-link>
         <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
           <span class="fly-mid"></span>

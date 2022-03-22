@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home'
 import store from '@/store'
+import jwt from 'jsonwebtoken'
+import dayjs from 'dayjs'
 
 const Login = () => import(/* webpackChunkName: 'login' */ './views/Login.vue')
 const Reg = () => import(/* webpackChunkName: 'reg' */ './views/Reg.vue')
@@ -88,7 +90,7 @@ const router = new Router({
         },
         {
           path: 'set',
-          name: 'set',
+          // name: 'set',
           component: Settings,
           children: [
             {
@@ -115,7 +117,7 @@ const router = new Router({
         },
         {
           path: 'posts',
-          name: 'posts',
+          // name: 'posts',
           component: Posts,
           children: [
             {
@@ -150,9 +152,15 @@ router.beforeEach((to, from, next) => {
   const token = sessionStorage.getItem('token')
   const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
   if (token !== '' && token !== null) {
-    store.commit('setUserInfo', userInfo)
-    store.commit('setToken', token)
-    store.commit('setIsLogin', true)
+    const payload = jwt.decode(token)
+    if (dayjs().isBefore(dayjs(payload.exp * 1000))) {
+      console.log(payload)
+      store.commit('setUserInfo', userInfo)
+      store.commit('setToken', token)
+      store.commit('setIsLogin', true)
+    } else {
+      sessionStorage.clear()
+    }
   }
   if (to.matched.some(record => record.meta.requiresAuth)) {
   // if (to.meta.requiresAuth) {

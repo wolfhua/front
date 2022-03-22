@@ -70,7 +70,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$route.params.catalog)
+    // console.log(this.$route.params.catalog)
     const catalog = this.$route.params.catalog
     if (typeof catalog !== 'undefined' && catalog !== '') {
       this.catalog = catalog
