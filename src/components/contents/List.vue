@@ -69,14 +69,6 @@ export default {
       this.init()
     }
   },
-  mounted () {
-    // console.log(this.$route.params.catalog)
-    const catalog = this.$route.params.catalog
-    if (typeof catalog !== 'undefined' && catalog !== '') {
-      this.catalog = catalog
-    }
-    this._getLists()
-  },
   methods: {
     search (val) {
       if (typeof val === 'undefined' && this.current === '') {

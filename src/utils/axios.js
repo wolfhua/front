@@ -2,6 +2,8 @@
 // 对错误的统一处理
 import axios from 'axios'
 import errorHandle from './errorHandle'
+import store from '@/store'
+import { publicPath } from '@/config'
 
 const CancelToken = axios.CancelToken
 
@@ -39,6 +41,15 @@ class HttpRequest {
   interceptors (instance) {
     // 请求拦截器
     instance.interceptors.request.use((config) => {
+      // 判断是否是公共路径，如果是不需要添加Authorization请求头
+      let isPublic = false
+      publicPath.map((path) => {
+        isPublic = isPublic || path.test(config.url)
+      })
+      const token = store.state.token
+      if (!isPublic && token) {
+        config.headers.Authorization = 'Bearer ' + token
+      }
       // Do something before request is sent
       // console.log('config:' + JSON.stringify(config, null, 2))
       const key = config.url + '&' + config.method

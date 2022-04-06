@@ -1,58 +1,105 @@
 <template>
   <div class="layui-container fly-marginTop">
-  <div class="fly-panel fly-panel-user" pad20>
-    <div class="layui-tab layui-tab-brief" lay-filter="user">
-      <ul class="layui-tab-title">
-        <li><router-link :to="{name: 'Login'}">登入</router-link></li>
-        <li class="layui-this">找回密码<!--重置密码--></li>
-      </ul>
-      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
-        <ValidationObserver ref="observer" v-slot="{ validate }">
-          <div class="layui-tab-item layui-show">
-            <div class="layui-form layui-form-pane">
-              <form method="post">
-                <ValidationProvider class="layui-form-item" name="username" tag="div" rules="required|email" v-slot="{ errors }">
-                  <label for="L_email" class="layui-form-label">邮箱</label>
-                  <div class="layui-input-inline">
-                    <input type="text" v-model="username" name="username" autocomplete="off" class="layui-input">
-                  </div>
-                  <div class="error layui-form-mid">{{errors[0]}}</div>
-                </ValidationProvider>
-                <ValidationProvider class="layui-form-item" name="code" tag="div" rules="required|length:4" v-slot="{ errors }">
-                  <div class="layui-row">
-                    <label for="L_vercode" class="layui-form-label">验证码</label>
+    <div class="fly-panel fly-panel-user" pad20>
+      <div class="layui-tab layui-tab-brief" lay-filter="user">
+        <ul class="layui-tab-title">
+          <li><router-link :to="{ name: 'Login' }">登入</router-link></li>
+          <li class="layui-this">找回密码<!--重置密码--></li>
+        </ul>
+        <div
+          class="layui-form layui-tab-content"
+          id="LAY_ucm"
+          style="padding: 20px 0"
+        >
+          <ValidationObserver ref="observer" v-slot="{ validate }">
+            <div class="layui-tab-item layui-show">
+              <div class="layui-form layui-form-pane">
+                <form method="post">
+                  <ValidationProvider
+                    class="layui-form-item"
+                    name="username"
+                    tag="div"
+                    rules="required|email"
+                    v-slot="{ errors }"
+                  >
+                    <label for="L_email" class="layui-form-label">邮箱</label>
                     <div class="layui-input-inline">
-                      <input type="text" v-model="code" name="code" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                      <input
+                        type="text"
+                        v-model="username"
+                        name="username"
+                        autocomplete="off"
+                        class="layui-input"
+                      />
                     </div>
-                    <div>
-                      <span v-html="svg" @click="getCode()"></span>
+                    <div class="error layui-form-mid">{{ errors[0] }}</div>
+                  </ValidationProvider>
+                  <ValidationProvider
+                    class="layui-form-item"
+                    name="code"
+                    tag="div"
+                    rules="required|length:4"
+                    v-slot="{ errors }"
+                  >
+                    <div class="layui-row">
+                      <label for="L_vercode" class="layui-form-label"
+                        >验证码</label
+                      >
+                      <div class="layui-input-inline">
+                        <input
+                          type="text"
+                          v-model="code"
+                          name="code"
+                          placeholder="请输入验证码"
+                          autocomplete="off"
+                          class="layui-input"
+                        />
+                      </div>
+                      <div>
+                        <span v-html="svg" @click="getCode()"></span>
+                      </div>
                     </div>
+                    <div class="error layui-form-mid">{{ errors[0] }}</div>
+                  </ValidationProvider>
+                  <div class="layui-form-item">
+                    <button
+                      type="button"
+                      class="layui-btn"
+                      @click="validate().then(submit)"
+                    >
+                      提交
+                    </button>
                   </div>
-                  <div class="error layui-form-mid">{{ errors[0] }}</div>
-                </ValidationProvider>
-                <div class="layui-form-item">
-                  <button type="button" class="layui-btn" @click="validate().then(submit)">提交</button>
-                </div>
-                <div class="layui-form-item fly-form-app">
-                  <span>或者直接使用社交账号快捷注册</span>
-                  <a href="javascript:;" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
-                  <a href="javascript:;" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-weibo" title="微博登入"></a>
-                </div>
-              </form>
+                  <div class="layui-form-item fly-form-app">
+                    <span>或者直接使用社交账号快捷注册</span>
+                    <a
+                      href="javascript:;"
+                      onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})"
+                      class="iconfont icon-qq"
+                      title="QQ登入"
+                    ></a>
+                    <a
+                      href="javascript:;"
+                      onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})"
+                      class="iconfont icon-weibo"
+                      title="微博登入"
+                    ></a>
+                  </div>
+                </form>
+              </div>
             </div>
-
-          </div>
-        </ValidationObserver>
+          </ValidationObserver>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 // import '@/local/index.js'
 import { getCaptch, forget } from '@/api/login.js'
+import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'forget',
   components: {
@@ -67,6 +114,15 @@ export default {
     }
   },
   mounted () {
+    let sid = ''
+    if (localStorage.getItem('sid')) {
+      sid = localStorage.getItem('sid')
+    } else {
+      sid = uuidv4()
+      localStorage.setItem('sid', sid)
+    }
+    // 提交设置sid到store
+    this.$store.commit('setSid', sid)
     this.getCode()
   },
   methods: {
@@ -87,10 +143,17 @@ export default {
       }
       forget({
         username: this.username,
-        code: this.code
+        code: this.code,
+        sid: this.$store.state.sid
       }).then(res => {
         if (res.code === 200) {
-          alert(res.msg)
+          this.$popup({
+            msg: res.msg
+          })
+        } else {
+          this.$popup({
+            msg: res.msg
+          })
         }
       })
     }
@@ -99,7 +162,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.error{
+.error {
   color: red;
   font-weight: 600;
 }

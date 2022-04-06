@@ -182,6 +182,7 @@ export default {
       }).then(res => {
         if (res.code === 200) {
           // 登录成功，存储用户信息
+          res.data.username = this.username
           this.$store.commit('setUserInfo', res.data)
           this.$store.commit('setToken', res.token)
           this.$store.commit('setIsLogin', true)

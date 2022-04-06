@@ -23,6 +23,9 @@ const PicUpload = () => import(/* webpackChunkName: 'upload-pic' */ './component
 const Accounts = () => import(/* webpackChunkName: 'accounts' */ './components/user/common/Accounts.vue')
 const MyPost = () => import(/* webpackChunkName: 'my-post' */ './components/user/common/MyPost.vue')
 const MyCollection = () => import(/* webpackChunkName: 'my-collection' */ './components/user/common/MyCollection.vue')
+const NotFound = () => import(/* webpackChunkName: 'notfound' */ './views/Notfound.vue')
+const Confirm = () => import(/* webpackChunkname: 'confirm' */ './views/Confirm.vue')
+const Reset = () => import(/* webpackChunkname: 'reset' */ './views/Reset.vue')
 
 Vue.use(Router)
 
@@ -50,6 +53,16 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/confirm',
+      name: 'confrim',
+      component: Confirm
+    },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: Reset
     },
     {
       path: '/reg',
@@ -143,6 +156,14 @@ const router = new Router({
           component: Others
         }
       ]
+    },
+    {
+      path: '/404',
+      component: NotFound
+    },
+    {
+      path: '*',
+      redirect: '/404'
     }
   ]
 })

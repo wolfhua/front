@@ -30,7 +30,7 @@ const forget = (option) => {
   //   console.log(e)
   // }
   // return result
-  return axios.post('/forget', {
+  return axios.post('/login/forget', {
     ...option
   })
 }
@@ -55,9 +55,16 @@ const register = (regInfo) => {
   })
 }
 
+/**
+ * 重置密码接口
+ * @param {*} info 重置密码信息
+ */
+const reset = (info) => axios.post('/login/reset', { ...info })
+
 export {
   getCaptch,
   forget,
   login,
-  register
+  register,
+  reset
 }
