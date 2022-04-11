@@ -126,6 +126,7 @@
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { getCaptch, login } from '@/api/login.js'
 import { v4 as uuidv4 } from 'uuid'
+import { baseUrl } from '@/config'
 export default {
   name: 'login',
   components: {
@@ -183,6 +184,10 @@ export default {
         if (res.code === 200) {
           // 登录成功，存储用户信息
           res.data.username = this.username
+          if (res.data.pic) {
+            const BaseUrl = process.env.NODE_ENV === 'development' ? baseUrl.dev : baseUrl.pro
+            res.data.pic = BaseUrl + res.data.pic
+          }
           this.$store.commit('setUserInfo', res.data)
           this.$store.commit('setToken', res.token)
           this.$store.commit('setIsLogin', true)

@@ -10,7 +10,7 @@
           id="pic"
           type="file"
           name="file"
-          accept="image/jpg, image/png, image/gif"
+          accept="image/gif, image/jpeg, image/jpg, image/png"
           @change="upload"
         />
         <img :src="pic" />
@@ -22,7 +22,8 @@
 
 <script>
 import { uploadImg } from '@/api/content'
-// import { updateUserInfo } from '@/api/user'
+import { baseUrl } from '@/config'
+import { updateUserInfo } from '@/api/user'
 export default {
   name: 'pic-upload',
   data () {
@@ -42,15 +43,23 @@ export default {
       // 上传图片 ->uploadImg
       uploadImg(this.formData).then((res) => {
         // 更新用户基本资料 -> updateUserInfo
-        console.log(res)
-        // updateUserInfo({ pic: this.pic }).then((res) => {
-        //   if (res.code === 200) {
-        //     const user = this.$store.state.userInfo
-        //     user.pic = this.pic
-        //     this.$store.commit('setUserInfo', user)
-        //     this.$msg('图片上传成功')
-        //   }
-        // })
+        if (res.code === 200) {
+          const BaseUrl = process.env.NODE_ENV === 'development' ? baseUrl.dev : baseUrl.pro
+          this.pic = BaseUrl + res.data
+          updateUserInfo({ pic: res.data }).then((res) => {
+            if (res.code === 200) {
+              const user = this.$store.state.userInfo
+              user.pic = this.pic
+              this.$store.commit('setUserInfo', user)
+              this.$msg({
+                // type: 'shake',
+                msg: res.msg,
+                duration: 2000
+              })
+            }
+          })
+        }
+        document.getElementById('pic').value = ''
       })
     }
   }

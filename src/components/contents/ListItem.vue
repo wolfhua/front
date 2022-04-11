@@ -63,6 +63,7 @@ import List from '@/components/contents/List';
 <script>
 // lodash效率更高
 import _ from 'lodash'
+import { baseUrl } from '@/config'
 import moment from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -106,6 +107,10 @@ export default {
           case 'discuss':
             item.catalog = '交流'
             break
+        }
+        if (item.uid.pic) {
+          const BaseUrl = process.env.NODE_ENV === 'development' ? baseUrl.dev : baseUrl.pro
+          item.uid.pic = BaseUrl + item.uid.pic
         }
       })
       return this.lists
