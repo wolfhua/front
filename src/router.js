@@ -26,6 +26,7 @@ const MyCollection = () => import(/* webpackChunkName: 'my-collection' */ './com
 const NotFound = () => import(/* webpackChunkName: 'notfound' */ './views/Notfound.vue')
 const Confirm = () => import(/* webpackChunkname: 'confirm' */ './views/Confirm.vue')
 const Reset = () => import(/* webpackChunkname: 'reset' */ './views/Reset.vue')
+const Add = () => import(/* webpackChunkname: 'add' */ './components/contents/Add.vue')
 
 Vue.use(Router)
 
@@ -53,6 +54,11 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/add',
+      name: 'add',
+      component: Add
     },
     {
       path: '/confirm',
@@ -175,7 +181,6 @@ router.beforeEach((to, from, next) => {
   if (token !== '' && token !== null) {
     const payload = jwt.decode(token)
     if (dayjs().isBefore(dayjs(payload.exp * 1000))) {
-      console.log(payload)
       store.commit('setUserInfo', userInfo)
       store.commit('setToken', token)
       store.commit('setIsLogin', true)

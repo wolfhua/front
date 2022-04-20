@@ -13,6 +13,7 @@ import Pop from './components/modules/pop/index'
 Vue.use(Popup)
 Vue.use(Pop)
 
+// 阻止启动生产消息
 Vue.config.productionTip = false
 
 // axios.defaults.baseURL = (process.env.NODE_ENV !== 'production') ? 'http://localhost:3001' : 'http://simuchen.com'

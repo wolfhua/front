@@ -25,6 +25,7 @@ localize('zh-CN', {
     name: '账号',
     username: '邮箱',
     nickname: '昵称',
+    oldpassword: '原密码',
     password: '密码',
     repassword: '密码',
     code: '验证码'
