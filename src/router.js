@@ -27,6 +27,7 @@ const NotFound = () => import(/* webpackChunkName: 'notfound' */ './views/Notfou
 const Confirm = () => import(/* webpackChunkname: 'confirm' */ './views/Confirm.vue')
 const Reset = () => import(/* webpackChunkname: 'reset' */ './views/Reset.vue')
 const Add = () => import(/* webpackChunkname: 'add' */ './components/contents/Add.vue')
+const Detail = () => import(/* webpackChunkname: 'detail' */ './components/contents/Detail.vue')
 
 Vue.use(Router)
 
@@ -58,7 +59,14 @@ const router = new Router({
     {
       path: '/add',
       name: 'add',
+      meta: { requiresAuth: true },
       component: Add
+    },
+    {
+      path: '/detail/:tid',
+      props: true, // 路由传参
+      name: 'detail',
+      component: Detail
     },
     {
       path: '/confirm',

@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      class="layui-layer layui-layer-page layui-layer-border edit-content"
+      class="layui-layer-page layui-layer-border edit-content"
       v-show="isShow"
       ref="wrap"
     >
@@ -54,7 +54,7 @@ import { uploadImg } from '@/api/content'
 import { baseUrl } from '@/config'
 export default {
   name: 'ImgUpload',
-  props: ['isShow', 'ctrl'],
+  props: ['isShow'],
   data () {
     return {
       pic: '',
@@ -62,22 +62,6 @@ export default {
     }
   },
   methods: {
-    handleFaceClick (item) {
-      this.$emit('addEvent', item)
-    },
-    handleBodyClick (e) {
-      e.stopPropagation()
-      // 触发隐藏本组件的关闭事件
-      // 判断是否点击到了飞控制icon + 本组件 以外的地方
-      if (typeof this.ctrl === 'undefined') {
-        return
-      }
-      if (!(this.ctrl.contains(e.target) || this.$refs.wrap.contains(e.target))) {
-        this.$emit('closeEvent')
-        this.pic = ''
-        this.formData = ''
-      }
-    },
     close () {
       // 清空输入内容，选择的文件
       this.$emit('closeEvent')
@@ -117,14 +101,6 @@ export default {
         this.$emit('closeEvent')
       }, 0)
     }
-  },
-  mounted () {
-    this.$nextTick(() => {
-      document.querySelector('body').addEventListener('click', this.handleBodyClick)
-    })
-  },
-  beforeDestroy () {
-    document.querySelector('body').removeEventListener('click', this.handleBodyClick)
   }
 }
 </script>

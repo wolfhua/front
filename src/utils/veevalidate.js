@@ -1,5 +1,6 @@
 import { extend, localize } from 'vee-validate'
-import { required, email, length, min, max, confirmed } from 'vee-validate/dist/rules'
+// eslint-disable-next-line camelcase
+import { required, email, length, min, max, confirmed, is_not } from 'vee-validate/dist/rules'
 import zh from 'vee-validate/dist/locale/zh_CN.json'
 
 extend('required', required)
@@ -19,6 +20,7 @@ extend('nickname', {
     return !(/^\d+/).test(value)
   }
 })
+extend('is_not', is_not)
 
 localize('zh-CN', {
   names: {
@@ -28,7 +30,9 @@ localize('zh-CN', {
     oldpassword: '原密码',
     password: '密码',
     repassword: '密码',
-    code: '验证码'
+    code: '验证码',
+    title: '标题',
+    catalog: '分类'
   },
   messages: {
     ...zh.messages,
@@ -38,7 +42,11 @@ localize('zh-CN', {
     // length: '验证码长度为4!'
     nickname: '昵称不能以数字开头'
   },
+  // 针对不同的name,定义不同的message消息
   fields: {
+    catalog: {
+      is_not: '请先选择{_field_}'
+    },
     username: {
       email: '请输入正确的{_field_}',
       required: '{_field_}不能为空哦！'

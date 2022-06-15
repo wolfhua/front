@@ -38,6 +38,9 @@ export default {
   .pr#{$i} {
     padding-right: $i * 10 + px !important;
   }
+  .pt#{$i} {
+    padding-top: $i * 10 + px !important;
+  }
   .mr#{$i} {
     margin-right: $i * 10 + px !important;
   }
@@ -68,5 +71,25 @@ export default {
 }
 .pull-right {
   float: right;
+}
+
+.d-hide {
+  position: absolute;
+  overflow: hidden;
+  height: 0;
+}
+.d-flex {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  &.flex-start {
+    justify-content: flex-start;
+  }
+  &.flex-end {
+    justify-content: flex-end;
+  }
+  &.flex-center {
+    justify-content: center;
+  }
 }
 </style>

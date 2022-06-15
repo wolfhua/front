@@ -1,5 +1,5 @@
 <template>
-  <div class="layui-container fly-marginTop">
+  <div class="layui-container fly-marginTop" :class="{ 'd-hide': isHide }">
     <div class="fly-panel" pad20 style="padding-top: 5px">
       <!--<div class="fly-none">没有权限</div>-->
       <div class="layui-form layui-form-pane">
@@ -20,7 +20,11 @@
                 <validation-observer ref="observer" v-slot="{ validate }">
                   <div class="layui-row layui-col-space15 layui-form-item">
                     <div class="layui-col-md3">
-                      <validation-provider name="catalog" v-slot="{ errors }">
+                      <validation-provider
+                        name="catalog"
+                        rules="is_not:请选择"
+                        v-slot="{ errors }"
+                      >
                         <div class="layui-row">
                           <label class="layui-form-label">所在专栏</label>
                           <div
@@ -84,7 +88,10 @@
                       </validation-provider>
                     </div>
                   </div>
-                  <editor></editor>
+                  <editor
+                    @editorContent="addContent"
+                    :initContent="content"
+                  ></editor>
                   <div class="layui-form-item">
                     <div class="layui-inline">
                       <label class="layui-form-label">悬赏飞吻</label>
@@ -178,6 +185,7 @@
 <script>
 import CodeMix from '@/mixin/code'
 import Editor from '@/components/modules/editor/Index'
+import { addPost } from '@/api/content'
 export default {
   name: 'add-post',
   mixins: [CodeMix],
@@ -217,6 +225,27 @@ export default {
       title: ''
     }
   },
+  updated () {
+    console.log(this.title)
+    console.log(this.content)
+  },
+  mounted () {
+    const saveData = localStorage.getItem('addPostData')
+    if (saveData && saveData !== '') {
+      this.$popup({
+        type: 'confirm',
+        msg: '是否继续编辑上次退出前的内容？'
+      }, () => {
+        const obj = JSON.parse(saveData)
+        this.title = obj.title
+        this.cataIndex = obj.cataIndex
+        this.content = obj.content
+        this.favIndex = obj.favIndex
+      }, () => {
+        localStorage.removeItem('addPostData')
+      })
+    }
+  },
   methods: {
     chooseCatalog (item, index) {
       this.cataIndex = index
@@ -229,6 +258,57 @@ export default {
     },
     changeFav () {
       this.isSelect_fav = !this.isSelect_fav
+    },
+    // 编辑器内容
+    addContent (val) {
+      this.content = val
+      const saveData = {
+        title: this.title,
+        cataIndex: this.cataIndex,
+        content: this.content,
+        favIndex: this.favIndex
+      }
+      if (this.content.trim() !== '') {
+        localStorage.setItem('addPostData', JSON.stringify(saveData))
+      }
+    },
+    async submit () {
+      const isValid = await this.$refs.observer.validate()
+      if (!isValid) {
+        return false
+      }
+      // 判断是否有内容
+      if (this.content === '') {
+        this.$msg({
+          msg: '请先输入内容哦'
+        })
+        return
+      }
+      addPost({
+        title: this.title,
+        catalog: this.catalogs[this.cataIndex].value,
+        content: this.content,
+        fav: this.favList[this.favIndex],
+        code: this.code,
+        sid: this.$store.state.sid
+      }).then((res) => {
+        if (res.code === 200) {
+          localStorage.setItem('addPostData', '')
+          this.$alert('发表成功，即将跳转', () => {
+            this.$router.push({ name: 'index' })
+          })
+        } else {
+          this.$popup({
+            msg: res.msg
+          })
+        }
+      })
+    }
+  },
+  computed: {
+    // 发帖功能预览时，将外侧滚动条隐藏
+    isHide () {
+      return this.$store.state.isHide
     }
   }
 }
