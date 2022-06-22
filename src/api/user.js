@@ -25,9 +25,25 @@ const updateUsername = (data) => axios.get('/public/reset-email?' + qs.stringify
 // 修改密码
 const changePassword = (data) => axios.post('/user/change-password', data)
 
+// 设置收藏 & 取消收藏
+const addCollect = (data) => axios.get('/user/setCollect?' + qs.stringify(data))
+
+// 获取收藏列表
+const getCollect = (data) => axios.get('/user/collect?' + qs.stringify(data))
+
+// 获取用户发帖列表
+const getPostListByUid = (data) => axios.get('/user/post?' + qs.stringify(data))
+
+// 删除指定文章
+const deletePostByUid = (data) => axios.get('/user/deletePost?' + qs.stringify(data))
+
 export {
   userSign,
   updateUserInfo,
   updateUsername,
-  changePassword
+  changePassword,
+  addCollect,
+  getCollect,
+  getPostListByUid,
+  deletePostByUid
 }

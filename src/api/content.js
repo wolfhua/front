@@ -1,5 +1,6 @@
 import axios from '@/utils/request'
 import qs from 'qs'
+import store from '@/store'
 
 /**
  * 获取文章列表
@@ -37,7 +38,21 @@ const uploadImg = (formData) => axios.post('/content/upload', formData)
 const addPost = (data) => axios.post('/content/add', { ...data })
 
 // 获取文章详情
-const postDetail = (tid) => axios.get('/public/content/detail?tid=' + tid)
+const postDetail = (tid) => {
+  const token = store.state.token
+  let headers = {}
+  if (token !== '') {
+    headers = {
+      headers: {
+        Authorization: 'Bearer ' + store.state.token
+      }
+    }
+  }
+  return axios.get('/public/content/detail?tid=' + tid, headers)
+}
+
+// 编辑帖子
+const updatePost = (data) => axios.post('/content/update', { ...data })
 
 export {
   getList,
@@ -46,5 +61,6 @@ export {
   getLinks,
   uploadImg,
   addPost,
-  postDetail
+  postDetail,
+  updatePost
 }

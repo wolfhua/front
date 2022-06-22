@@ -2,7 +2,8 @@
   <div class="fly-header layui-bg-black">
     <div class="layui-container">
       <a class="fly-logo" href="/">
-        <img src="../assets/img/logo-2.png" alt="layui" />
+        <img src="../assets/img/logo.svg" alt="layui" />
+        <!-- <img src="../assets/img/logo-2.png" alt="layui" /> -->
       </a>
       <ul class="layui-nav fly-nav layui-hide-xs">
         <li class="layui-nav-item layui-this">
@@ -167,9 +168,11 @@ export default {
 
 <style lang="scss" scoped>
 .fly-logo {
-  left: -15px;
-  top: -10px;
-  margin-left: 15px;
+  // left: -15px;
+  // top: -10px;
+  // margin-left: 15px;
+  width: 120px;
+  height: 40px;
 }
 .icon-size {
   font-size: 18px !important;

@@ -1,4 +1,3 @@
-import List from '@/components/contents/List';
 <template>
   <div>
     <ul class="fly-list">
@@ -13,7 +12,9 @@ import List from '@/components/contents/List';
         </a>
         <h2>
           <a class="layui-badge">{{ item.catalog }}</a>
-          <a href="jie/detail.html">{{ item.title }}</a>
+          <router-link :to="{ name: 'detail', params: { tid: item._id } }">{{
+            item.title
+          }}</router-link>
         </h2>
         <div class="fly-list-info">
           <a href="user/home.html" link>
@@ -64,11 +65,11 @@ import List from '@/components/contents/List';
 // lodash效率更高
 import _ from 'lodash'
 import { baseUrl } from '@/config'
-import moment from 'dayjs'
-import 'dayjs/locale/zh-cn'
-import relativeTime from 'dayjs/plugin/relativeTime'
-moment.locale('zh-cn')
-moment.extend(relativeTime)
+// import moment from 'dayjs'
+// import 'dayjs/locale/zh-cn'
+// import relativeTime from 'dayjs/plugin/relativeTime'
+// moment.locale('zh-cn')
+// moment.extend(relativeTime)
 export default {
   name: 'listitem',
   props: {
@@ -120,22 +121,22 @@ export default {
     more () {
       this.$emit('nextPage')
     }
-  },
-  // 过滤器
-  filters: {
-    formatDate (date) {
-      // 7天前，显示日期
-      if (moment(date).isBefore(moment().subtract('7', 'days'))) {
-        return moment(date).format('YYYY-MM-DD')
-      } else {
-        // xx分钟（小时、天）前
-        // moment库用法
-        // return moment(date).from(moment())
-        // dayjs库用法
-        return moment(date).fromNow()
-      }
-    }
   }
+  // 过滤器
+  // filters: {
+  //   formatDate (date) {
+  //     // 7天前，显示日期
+  //     if (moment(date).isBefore(moment().subtract('7', 'days'))) {
+  //       return moment(date).format('YYYY-MM-DD')
+  //     } else {
+  //       // xx分钟（小时、天）前
+  //       // moment库用法
+  //       // return moment(date).from(moment())
+  //       // dayjs库用法
+  //       return moment(date).fromNow()
+  //     }
+  //   }
+  // }
 }
 </script>
 

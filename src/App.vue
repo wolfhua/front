@@ -92,4 +92,10 @@ export default {
     justify-content: center;
   }
 }
+.link {
+  color: #01aaed;
+}
+.success {
+  color: #5fb878;
+}
 </style>

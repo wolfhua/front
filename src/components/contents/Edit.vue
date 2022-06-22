@@ -5,10 +5,7 @@
       <div class="layui-form layui-form-pane">
         <div class="layui-tab layui-tab-brief" lay-filter="user">
           <ul class="layui-tab-title">
-            <li class="layui-this">
-              发表新帖
-              <!-- 编辑帖子 -->
-            </li>
+            <li class="layui-this">编辑帖子</li>
           </ul>
           <div
             class="layui-form layui-tab-content"
@@ -20,48 +17,25 @@
                 <validation-observer ref="observer" v-slot="{ validate }">
                   <div class="layui-row layui-col-space15 layui-form-item">
                     <div class="layui-col-md3">
-                      <validation-provider
-                        name="catalog"
-                        rules="is_not:请选择"
-                        v-slot="{ errors }"
-                      >
-                        <div class="layui-row">
-                          <label class="layui-form-label">所在专栏</label>
-                          <div
-                            class="layui-input-block"
-                            @click="changeSelect()"
-                          >
-                            <div
-                              class="layui-unselect layui-form-select"
-                              :class="{ 'layui-form-selected': isSelect }"
-                            >
-                              <div class="layui-select-title">
-                                <input
-                                  type="text"
-                                  placeholder="请选择"
-                                  readonly
-                                  v-model="catalogs[cataIndex].text"
-                                  class="layui-input layui-unselect"
-                                />
-                                <i class="layui-edge"></i>
-                              </div>
-                              <dl class="layui-anim layui-anim-upbit">
-                                <dd
-                                  v-for="(item, index) in catalogs"
-                                  :key="'catalog' + index"
-                                  @click="chooseCatalog(item, index)"
-                                  :class="{ 'layui-this': index === cataIndex }"
-                                >
-                                  {{ item.text }}
-                                </dd>
-                              </dl>
+                      <div class="layui-row">
+                        <label class="layui-form-label">所在专栏</label>
+                        <div class="layui-input-block">
+                          <div class="layui-unselect layui-form-select">
+                            <div class="layui-select-title">
+                              <input
+                                type="text"
+                                placeholder="请选择"
+                                readonly
+                                v-model="catalogs[cataIndex].text"
+                                class="
+                                  layui-input layui-unselect layui-disabled
+                                "
+                              />
+                              <i class="layui-edge"></i>
                             </div>
                           </div>
                         </div>
-                        <div class="layui-row">
-                          <span style="color: #c00">{{ errors[0] }}</span>
-                        </div>
-                      </validation-provider>
+                      </div>
                     </div>
                     <div class="layui-col-md9">
                       <validation-provider
@@ -96,31 +70,17 @@
                     <div class="layui-inline">
                       <label class="layui-form-label">悬赏飞吻</label>
                       <div class="layui-input-inline" style="width: 190px">
-                        <div
-                          class="layui-unselect layui-form-select"
-                          :class="{ 'layui-form-selected': isSelect_fav }"
-                          @click="changeFav()"
-                        >
+                        <div class="layui-unselect layui-form-select">
                           <div class="layui-select-title">
                             <input
                               type="text"
                               placeholder="请选择"
                               readonly
                               v-model="favList[favIndex]"
-                              class="layui-input layui-unselect"
+                              class="layui-input layui-unselect layui-disabled"
                             />
                             <i class="layui-edge"></i>
                           </div>
-                          <dl class="layui-anim layui-anim-upbit">
-                            <dd
-                              v-for="(item, index) in favList"
-                              :key="'catalog' + index"
-                              @click="chooseFav(item, index)"
-                              :class="{ 'layui-this': index === favIndex }"
-                            >
-                              {{ item }}
-                            </dd>
-                          </dl>
                         </div>
                       </div>
                       <div class="layui-form-mid layui-word-aux">
@@ -185,17 +145,16 @@
 <script>
 import CodeMix from '@/mixin/code'
 import Editor from '@/components/modules/editor/Index'
-import { addPost } from '@/api/content'
+import { updatePost } from '@/api/content'
 export default {
-  name: 'add-post',
+  name: 'edit-post',
+  props: ['tid', 'postDetail'],
   mixins: [CodeMix],
   components: {
     Editor
   },
   data () {
     return {
-      isSelect: false,
-      isSelect_fav: false,
       cataIndex: 0,
       favIndex: 0,
       catalogs: [
@@ -230,20 +189,29 @@ export default {
     console.log(this.content)
   },
   mounted () {
-    const saveData = localStorage.getItem('addPostData')
-    if (saveData && saveData !== '') {
-      this.$popup({
-        type: 'confirm',
-        msg: '是否继续编辑上次退出前的内容？'
-      }, () => {
-        const obj = JSON.parse(saveData)
-        this.title = obj.title
-        this.cataIndex = obj.cataIndex
-        this.content = obj.content
-        this.favIndex = obj.favIndex
-      }, () => {
-        localStorage.removeItem('addPostData')
-      })
+    if (this.postDetail) {
+      this.content = this.postDetail.content
+      this.title = this.postDetail.title
+      this.favIndex = this.favList.indexOf(parseInt(this.postDetail.fav))
+      this.cataIndex = this.catalogs.indexOf(this.catalogs.filter((item) => item.value === this.postDetail.catalog)[0])
+      localStorage.setItem('editPostData', JSON.stringify(this.postDetail))
+    } else {
+      // 无帖子详情信息传递过来，取缓存内容
+      const saveData = localStorage.getItem('editPostData')
+      if (saveData && saveData !== '') {
+        this.$popup({
+          type: 'confirm',
+          msg: '是否继续编辑上次退出前的内容？'
+        }, () => {
+          const obj = JSON.parse(saveData)
+          this.title = obj.title
+          this.cataIndex = obj.cataIndex
+          this.content = obj.content
+          this.favIndex = obj.favIndex
+        }, () => {
+          localStorage.removeItem('editPostData')
+        })
+      }
     }
   },
   methods: {
@@ -268,8 +236,15 @@ export default {
         content: this.content,
         favIndex: this.favIndex
       }
+      console.log(this.content.trim())
       if (this.content.trim() !== '') {
-        localStorage.setItem('addPostData', JSON.stringify(saveData))
+        const editPostData = localStorage.getItem('editPostData')
+        let newObj = { ...saveData }
+        if (editPostData !== '') {
+          newObj = { ...JSON.parse(editPostData), ...saveData }
+        }
+        console.warn(newObj)
+        localStorage.setItem('editPostData', JSON.stringify(newObj))
       }
     },
     async submit () {
@@ -284,18 +259,17 @@ export default {
         })
         return
       }
-      addPost({
+      updatePost({
+        tid: this.tid,
         title: this.title,
-        catalog: this.catalogs[this.cataIndex].value,
         content: this.content,
-        fav: this.favList[this.favIndex],
         code: this.code,
         sid: this.$store.state.sid
       }).then((res) => {
         if (res.code === 200) {
-          localStorage.setItem('addPostData', '')
-          this.$alert('发表成功，即将跳转', () => {
-            this.$router.push({ name: 'detail', params: { tid: res.data.i_id } })
+          localStorage.setItem('editPostData', '')
+          this.$alert('修改帖子成功，即将跳转', () => {
+            this.$router.push({ name: 'detail', params: { tid: this.tid } })
           })
         } else {
           this.$popup({

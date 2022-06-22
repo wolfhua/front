@@ -6,6 +6,7 @@
       'flex-start': align === 'left',
       'flex-end': align === 'right',
     }"
+    v-show="totalPages > 0"
   >
     <div class="layui-box layui-laypage layui-laypage-default">
       <a
@@ -58,7 +59,9 @@
       </a>
       <a
         href="javascript:;"
-        :class="{ 'layui-disabled': current === pages.length - 1 }"
+        :class="{
+          'layui-disabled': totalPages === 0 || current === pages.length - 1,
+        }"
         @click.prevent="next()"
       >
         <i class="layui-icon layui-icon-right" v-if="showType === 'icon'"></i>
@@ -67,7 +70,9 @@
       <a
         href="javascript:;"
         class="layui-laypage-next"
-        :class="{ 'layui-disabled': current === pages.length - 1 }"
+        :class="{
+          'layui-disabled': totalPages === 0 || current === pages.length - 1,
+        }"
         v-show="showEnd"
         @click.prevent="end()"
       >
@@ -77,7 +82,9 @@
     </div>
     <div class="total" v-if="hasTotal">
       到第
-      <input type="text" class="simu-input" />页 共 total 页
+      <input type="text" class="simu-input" @keyup.enter="jumpTo" />页 共
+      {{ totalPages }}
+      页
     </div>
     <div v-if="hasSelect">
       <div
@@ -161,6 +168,17 @@ export default {
       limit: 10
     }
   },
+  computed: {
+    totalPages () {
+      return Math.ceil(this.total / this.limit)
+    }
+  },
+  watch: {
+    // 监听total变化，total是异步返回的，初始值是0，当异步数据请求成功后，重新计算分页数据
+    total (newval, oldval) {
+      this.initPages()
+    }
+  },
   mounted () {
     // 初始化分页的长度
     this.limit = this.size
@@ -187,7 +205,9 @@ export default {
     chooseFav (item, index) {
       if (this.optIndex !== index) {
         // 调整完每页显示数量后，重新计算当前页码
-        this.$emit('changeCurrent', Math.floor(this.limit * this.current / this.options[index]))
+        // this.$emit('changeCurrent', Math.floor(this.limit * this.current / this.options[index]))
+        // 传递出当前limit数量
+        this.$emit('changeLimit', { limit: this.options[index], current: Math.floor(this.limit * this.current / this.options[index]) })
       }
       this.optIndex = index
       this.limit = this.options[this.optIndex]
@@ -197,6 +217,9 @@ export default {
       this.$emit('changeCurrent', 0)
     },
     end () {
+      if (this.pages.length === 0) {
+        return
+      }
       this.$emit('changeCurrent', this.pages.length - 1)
     },
     prev () {
@@ -214,7 +237,21 @@ export default {
       this.$emit('changeCurrent', cur)
     },
     changeIndex (val) {
-      this.$emit('changeCurrent', val)
+      if (this.current !== val) {
+        this.$emit('changeCurrent', val)
+      }
+    },
+    jumpTo (event) {
+      const value = event.target.value
+      if (value > this.pages.length || value <= 0) {
+        this.$msg({
+          msg: '页码有误'
+        })
+        return
+      }
+      if (value - 1 !== this.current) {
+        this.$emit('changeCurrent', value - 1)
+      }
     }
   }
 }
