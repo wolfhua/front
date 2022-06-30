@@ -2,14 +2,17 @@
   <div>
     <ul class="fly-list">
       <li v-for="(item, index) in items" :key="'listitem' + index">
-        <a href="user/home.html" class="fly-avatar">
+        <router-link
+          :to="{ name: 'home', params: { uid: item.uid._id } }"
+          class="fly-avatar"
+        >
           <img v-if="item.uid.pic" :src="item.uid.pic" alt="贤心" />
           <img
             v-else
             src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
             alt="贤心"
           />
-        </a>
+        </router-link>
         <h2>
           <a class="layui-badge">{{ item.catalog }}</a>
           <router-link :to="{ name: 'detail', params: { tid: item._id } }">{{
@@ -17,7 +20,10 @@
           }}</router-link>
         </h2>
         <div class="fly-list-info">
-          <a href="user/home.html" link>
+          <router-link
+            :to="{ name: 'home', params: { uid: item.uid._id } }"
+            link
+          >
             <cite>{{ item.uid.nickname }}</cite>
             <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
             <i
@@ -25,7 +31,7 @@
               v-if="item.uid.isVip !== '0'"
               >{{ "VIP" + item.uid.isVip }}</i
             >
-          </a>
+          </router-link>
           <span>{{ item.created | formatDate }}</span>
 
           <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"

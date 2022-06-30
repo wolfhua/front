@@ -6,8 +6,14 @@
         <div class="panel border">
           <div class="title">我的会员信息</div>
           <div class="content">
-            <p>积分经验值：<span class="highlight">60</span></p>
-            <p>您当前为：<span class="highlight">非VIP</span></p>
+            <p>
+              积分经验值：<span class="highlight">{{ userInfo.favs }}</span>
+            </p>
+            <p>
+              您当前为：<span class="highlight">{{
+                userInfo.isVip === "0" ? "非VIP" : "VIP" + userInfo.isVip
+              }}</span>
+            </p>
           </div>
         </div>
       </div>
@@ -38,6 +44,7 @@
 </template>
 
 <script>
+import { getInfo } from '@/api/user'
 import Sign from '@/components/sidebar/Sign.vue'
 export default {
   name: 'user-center',
@@ -108,6 +115,23 @@ export default {
           icon: 'layui-icon-user'
         }
       ]
+    }
+  },
+  computed: {
+    userInfo () {
+      return this.$store.state.userInfo
+    }
+  },
+  mounted () {
+    this.getUserInfo()
+  },
+  methods: {
+    getUserInfo () {
+      getInfo({ uid: this.userInfo._id }).then((res) => {
+        if (res.code === 200) {
+          this.$store.commit('setUserInfo', res.data)
+        }
+      })
     }
   }
 }

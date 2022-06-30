@@ -37,6 +37,15 @@ const getPostListByUid = (data) => axios.get('/user/post?' + qs.stringify(data))
 // 删除指定文章
 const deletePostByUid = (data) => axios.get('/user/deletePost?' + qs.stringify(data))
 
+// 获取用户的基本信息
+const getInfo = (data) => axios.get('/public/info?' + qs.stringify(data))
+
+// 获取用户最近评论列表
+const getCommentList = (data) => axios.get('/public/latestComment?' + qs.stringify(data))
+
+// 获取用户最近发表的文章列表
+const getPostPublic = (data) => axios.get('/public/latestPost?' + qs.stringify(data))
+
 export {
   userSign,
   updateUserInfo,
@@ -45,5 +54,8 @@ export {
   addCollect,
   getCollect,
   getPostListByUid,
-  deletePostByUid
+  deletePostByUid,
+  getInfo,
+  getCommentList,
+  getPostPublic
 }

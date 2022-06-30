@@ -7,7 +7,10 @@
         v-for="(item, index) in nav_list"
         :key="'nav' + index"
       >
-        <router-link :to="{ name: item.link }" :active-class="item.activeClass">
+        <router-link
+          :to="{ name: item.link, params: { uid: uid } }"
+          :active-class="item.activeClass"
+        >
           <i class="layui-icon" :class="item.icon"></i>
           {{ item.name }}
         </router-link>
@@ -18,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'center',
   data () {
@@ -57,6 +61,9 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapGetters(['uid'])
   }
 }
 </script>

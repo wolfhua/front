@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
+import { baseUrl } from '@/config'
 
 dayjs.extend(relativeTime)
 
@@ -13,6 +14,15 @@ const formatDate = (date) => {
     return dayjs(date).locale('zh-cn').from(dayjs())
   }
 }
+
+const completeUrl = (url) => {
+  if (url === '' || typeof url === 'undefined') {
+    return ''
+  }
+  const BaseUrl = process.env.NODE_ENV === 'development' ? baseUrl.dev : baseUrl.pro
+  return BaseUrl + url
+}
 export default {
-  formatDate
+  formatDate,
+  completeUrl
 }

@@ -127,10 +127,9 @@ const router = new Router({
       component: Forget
     },
     {
-      // path: '/user/:uid',
-      path: '/user',
+      path: '/user/:uid',
       name: 'home',
-      // props: true,
+      props: true,
       component: User
     },
     {
@@ -203,6 +202,7 @@ const router = new Router({
     },
     {
       path: '/404',
+      name: '404',
       component: NotFound
     },
     {

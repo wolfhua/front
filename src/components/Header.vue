@@ -55,7 +55,7 @@
         <!-- 登入后的状态 -->
         <template v-else>
           <li class="layui-nav-item" @mouseover="show()" @mouseleave="hide()">
-            <a class="fly-nav-avatar" href="javascript:;">
+            <router-link class="fly-nav-avatar" :to="{name: 'center'}">
               <cite class="layui-hide-xs">{{ userInfo.nickname }}</cite>
               <!-- <i
                 class="iconfont icon-renzheng layui-hide-xs"
@@ -71,7 +71,7 @@
                 v-else
                 src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
               />
-            </a>
+            </router-link>
             <dl
               class="layui-nav-child layui-anim layui-anim-upbit"
               :class="{ 'layui-show': isHover }"
@@ -89,7 +89,9 @@
                 </router-link>
               </dd>
               <dd>
-                <router-link :to="{ name: 'home' }">
+                <router-link
+                  :to="{ name: 'home', params: { uid: userInfo._id } }"
+                >
                   <i class="icon-size layui-icon layui-icon-home"></i>
                   我的主页
                 </router-link>

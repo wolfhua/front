@@ -110,7 +110,10 @@
                 <img :src="page.users ? page.users.pic : '/img/avatar/1.jpg'" />
               </a>
               <div class="fly-detail-user">
-                <a class="fly-link">
+                <router-link
+                  :to="{ name: 'home', params: { uid: page.users._id } }"
+                  class="fly-link"
+                >
                   <cite>{{ page.users ? page.users.nickname : "simu" }}</cite>
                   <i class="iconfont icon-renzheng"></i>
                   <i
@@ -123,7 +126,7 @@
                   >
                     VIP{{ page.users.isVip }}
                   </i>
-                </a>
+                </router-link>
                 <span>{{ page.created | formatDate }}</span>
               </div>
               <div class="detail-hits">
@@ -169,12 +172,18 @@
                 <div class="detail-about detail-about-reply">
                   <a class="fly-avatar" href="">
                     <img
-                      :src="item.cuid ? item.cuid.pic : '/img/avatar/1.jpg'"
+                      v-if="item.cuid"
+                      :src="item.cuid.pic | completeUrl"
+                      alt=""
                     />
+                    <img v-else src="/img/avatar/1.jpg" alt="" />
                   </a>
                   <div class="fly-detail-user">
-                    <a href="" class="fly-link">
-                      <cite>{{ item.cuid ? item.cuid.name : "simu" }}</cite>
+                    <router-link
+                      :to="{ name: 'home', params: { uid: item.cuid._id } }"
+                      class="fly-link"
+                    >
+                      <cite>{{ item.cuid ? item.cuid.nickname : "simu" }}</cite>
                       <!-- <i
                         class="iconfont icon-renzheng"
                       ></i> -->
@@ -187,7 +196,7 @@
                         "
                         >VIP{{ item.cuid.isVip }}</i
                       >
-                    </a>
+                    </router-link>
 
                     <span v-if="index === 0">(楼主)</span>
                     <!--
@@ -351,6 +360,7 @@ import { commentList, addComment, updateComment, setCommentBest, setHands } from
 import { addCollect } from '@/api/user'
 import { escapeHtml } from '@/utils/escapeHtml'
 import { scrollToElem } from '@/utils/common'
+import { baseUrl } from '@/config'
 export default {
   name: 'detail',
   props: ['tid'],
@@ -400,6 +410,8 @@ export default {
     getPostDetail () {
       postDetail(this.tid).then(res => {
         if (res.code === 200) {
+          const BaseUrl = process.env.NODE_ENV === 'development' ? baseUrl.dev : baseUrl.pro
+          res.data.users.pic = res.data.users.pic !== '' ? BaseUrl + res.data.users.pic : ''
           this.page = res.data
         }
       })
