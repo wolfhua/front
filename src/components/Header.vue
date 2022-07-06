@@ -55,7 +55,7 @@
         <!-- 登入后的状态 -->
         <template v-else>
           <li class="layui-nav-item" @mouseover="show()" @mouseleave="hide()">
-            <router-link class="fly-nav-avatar" :to="{name: 'center'}">
+            <router-link class="fly-nav-avatar" :to="{ name: 'center' }">
               <cite class="layui-hide-xs">{{ userInfo.nickname }}</cite>
               <!-- <i
                 class="iconfont icon-renzheng layui-hide-xs"
@@ -107,6 +107,17 @@
               </dd>
             </dl>
           </li>
+          <div class="fly-nav-msg" v-show="num.message && num.message !== 0">
+            {{ num.message }}
+          </div>
+          <transition name="fade">
+            <div class="layui-layer-tips" v-show="hasMsg">
+              <div class="layui-layer-content">
+                您有{{ num.message }}条未读消息
+                <i class="layui-layer-TipsG layui-layer-TipsB"></i>
+              </div>
+            </div>
+          </transition>
         </template>
       </ul>
     </div>
@@ -114,15 +125,30 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Header',
   data () {
     return {
       isHover: false,
-      hoverContr: {}
+      hoverContr: {},
+      hasMsg: false
+    }
+  },
+  watch: {
+    num (newval, oldval) {
+      if (newval.event && newval.message > 0 && newval !== oldval) {
+        this.hasMsg = true
+        setTimeout(() => {
+          this.hasMsg = false
+        }, 2000)
+      }
     }
   },
   computed: {
+    ...mapState({
+      num: state => state.message
+    }),
     userInfo () {
       return this.$store.state.userInfo
     },
@@ -178,5 +204,12 @@ export default {
 }
 .icon-size {
   font-size: 18px !important;
+}
+.layui-layer-tips {
+  position: absolute;
+  white-space: nowrap;
+  right: 0;
+  top: 60px;
+  z-index: 2000;
 }
 </style>

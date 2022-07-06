@@ -222,6 +222,10 @@ router.beforeEach((to, from, next) => {
       store.commit('setUserInfo', userInfo)
       store.commit('setToken', token)
       store.commit('setIsLogin', true)
+      if (!store.state.socket) {
+        // 初始化websocket
+        store.commit('initWebSocket', {})
+      }
     } else {
       sessionStorage.clear()
     }

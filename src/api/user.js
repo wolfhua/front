@@ -46,6 +46,12 @@ const getCommentList = (data) => axios.get('/public/latestComment?' + qs.stringi
 // 获取用户最近发表的文章列表
 const getPostPublic = (data) => axios.get('/public/latestPost?' + qs.stringify(data))
 
+// 获取用户未读消息
+const getMsg = (data) => axios.get('/user/getmsg?' + qs.stringify(data))
+
+// 获取用户未读消息
+const setMsg = (data) => axios.get('/user/setmsg?' + qs.stringify(data))
+
 export {
   userSign,
   updateUserInfo,
@@ -57,5 +63,7 @@ export {
   deletePostByUid,
   getInfo,
   getCommentList,
-  getPostPublic
+  getPostPublic,
+  getMsg,
+  setMsg
 }

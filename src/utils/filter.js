@@ -19,6 +19,9 @@ const completeUrl = (url) => {
   if (url === '' || typeof url === 'undefined') {
     return ''
   }
+  if (/^(http|https)/.test(url)) {
+    return url
+  }
   const BaseUrl = process.env.NODE_ENV === 'development' ? baseUrl.dev : baseUrl.pro
   return BaseUrl + url
 }
