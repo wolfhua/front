@@ -1,6 +1,6 @@
 <template>
   <div class="panel main pd20">
-    <div class="msg">Hi, Admin,您已经是我们的正式会员！</div>
+    <div class="msg">Hi, {{ userInfo.nickname }},您已经是我们的正式会员！</div>
     <div class="layui-row layui-col-space20">
       <div class="layui-col-md6">
         <div class="panel border">

@@ -139,7 +139,7 @@
               <router-link
                 class="layui-btn layui-btn-sm jie-admin"
                 :to="{ name: 'edit', params: { tid: tid, postDetail: page } }"
-                v-show="page.isEnd === '0'"
+                v-show="page.isEnd === '0' && page.users._id === user._id"
                 >编辑</router-link
               >
               <!-- <a href class="layui-btn layui-btn-sm jie-admin">编辑</a> -->

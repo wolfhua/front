@@ -295,7 +295,7 @@ export default {
         if (res.code === 200) {
           localStorage.setItem('addPostData', '')
           this.$alert('发表成功，即将跳转', () => {
-            this.$router.push({ name: 'detail', params: { tid: res.data.i_id } })
+            this.$router.push({ name: 'detail', params: { tid: res.data._id } })
           })
         } else {
           this.$popup({
