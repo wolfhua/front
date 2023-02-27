@@ -8,9 +8,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install cnpm -g --no-progress --registry=https://registry.npm.taobao.org
-
-RUN cnpm install --no-progress
+RUN yarn install --registry=https://registry.npm.taobao.org
 
 RUN npm run build
 
