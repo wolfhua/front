@@ -1,5 +1,5 @@
 # build stage
-FROM node:12 as build-stage
+FROM node:16 as build-stage
 
 LABEL maintainer=18011468389@163.com
 
