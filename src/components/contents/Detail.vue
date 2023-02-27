@@ -74,11 +74,13 @@
                 {{ tag.name }}
               </span>
 
-              <!-- <div class="fly-admin-box" data-id="123">
-                <span class="layui-btn layui-btn-xs jie-admin" type="del"
+              <div class="fly-admin-box" v-hasRole="'admin'">
+                <span
+                  class="layui-btn layui-btn-xs jie-admin"
+                  type="del"
+                  v-hasPermission="['get', 'delete']"
                   >删除</span
                 >
-
                 <span
                   class="layui-btn layui-btn-xs jie-admin"
                   type="set"
@@ -86,7 +88,14 @@
                   rank="1"
                   >置顶</span
                 >
-                 <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span>
+                <span
+                  class="layui-btn layui-btn-xs jie-admin"
+                  type="set"
+                  field="stick"
+                  rank="0"
+                  style="background-color: #ccc"
+                  >取消置顶</span
+                >
 
                 <span
                   class="layui-btn layui-btn-xs jie-admin"
@@ -95,8 +104,15 @@
                   rank="1"
                   >加精</span
                 >
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span>
-              </div> -->
+                <span
+                  class="layui-btn layui-btn-xs jie-admin"
+                  type="set"
+                  field="status"
+                  rank="0"
+                  style="background-color: #ccc"
+                  >取消加精</span
+                >
+              </div>
               <span class="fly-list-nums">
                 <a href="#comment">
                   <i class="iconfont" title="回答">&#xe60c;</i>
@@ -109,7 +125,7 @@
               <a class="fly-avatar">
                 <img :src="page.users ? page.users.pic : '/img/avatar/1.jpg'" />
               </a>
-              <div class="fly-detail-user">
+              <div class="fly-detail-user" v-if="page.users">
                 <router-link
                   :to="{ name: 'home', params: { uid: page.users._id } }"
                   class="fly-link"

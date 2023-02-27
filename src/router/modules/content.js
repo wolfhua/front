@@ -42,6 +42,10 @@ export default [
     path: '/detail/:tid',
     props: true, // 路由传参
     name: 'detail',
-    component: Detail
+    component: Detail,
+    meta: {
+      // 通过后台接口动态添加到路由  addRoute
+      types: ['get', 'delete', 'add', 'edit']
+    }
   }
 ]
